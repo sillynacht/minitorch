@@ -26,9 +26,11 @@ jobs:
       - name: Check Python syntax
         run: python -m compileall -q minitorch project tests
 
-      - name: Test completed modules
-        run: >-
-          python -m pytest tests -q -x
-          -m "task0_1 or task0_2 or task0_3 or task0_4 or
-              task1_1 or task1_2 or task1_3 or task1_4 or
-              task2_1 or task2_2 or task2_3 or task2_4"
+      - name: Test module 0
+        run: python -m pytest tests -q -x -m "task0_1 or task0_2 or task0_3 or task0_4"
+
+      - name: Test module 1
+        run: python -m pytest tests -q -x -m "task1_1 or task1_2 or task1_3 or task1_4"
+
+      - name: Test module 2
+        run: python -m pytest tests -q -x -m "task2_1 or task2_2 or task2_3 or task2_4"

@@ -21,6 +21,7 @@ class Graph:
 
 
 def simple(N: int) -> Graph:
+    """Label points 1 if x_1 < 0.5, and 0 otherwise."""
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -30,6 +31,7 @@ def simple(N: int) -> Graph:
 
 
 def diag(N: int) -> Graph:
+    """Label points 1 below the line x_1 + x_2 = 0.5, and 0 otherwise."""
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -39,6 +41,7 @@ def diag(N: int) -> Graph:
 
 
 def split(N: int) -> Graph:
+    """Label points 1 in the outer vertical strips, and 0 in the middle."""
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -48,6 +51,7 @@ def split(N: int) -> Graph:
 
 
 def xor(N: int) -> Graph:
+    """Label points 1 if their coordinates lie in opposite halves."""
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -57,6 +61,7 @@ def xor(N: int) -> Graph:
 
 
 def circle(N: int) -> Graph:
+    """Label points 1 outside the circle centered at (0.5, 0.5)."""
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -67,6 +72,7 @@ def circle(N: int) -> Graph:
 
 
 def spiral(N: int) -> Graph:
+    """Generate two spiral arms labeled 0 and 1, respectively."""
     def x(t: float) -> float:
         return t * math.cos(t) / 20.0
 

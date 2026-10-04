@@ -22,8 +22,11 @@ def central_difference(f: Any, *vals: Any, arg: int = 0, epsilon: float = 1e-6) 
     Returns:
         An approximation of $f'_i(x_0, \ldots, x_{n-1})$
     """
-    # TODO: Implement for Task 1.1.
-    raise NotImplementedError('Need to implement for Task 1.1')
+    vals_plus = list(vals)
+    vals_minus = list(vals)
+    vals_plus[arg] += epsilon
+    vals_minus[arg] -= epsilon
+    return (f(*vals_plus) - f(*vals_minus)) / (2.0 * epsilon)
 
 
 variable_count = 1
@@ -61,8 +64,22 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
     Returns:
         Non-constant Variables in topological order starting from the right.
     """
-    # TODO: Implement for Task 1.4.
-    raise NotImplementedError('Need to implement for Task 1.4')
+    order: List[Variable] = []
+    visited = set()
+    stack = [(variable, False)]
+
+    while stack:
+        current, finished = stack.pop()
+        if current.is_constant():
+            continue
+        if finished:
+            order.append(current)
+        elif current.unique_id not in visited:
+            visited.add(current.unique_id)
+            stack.append((current, True))
+            stack.extend((parent, False) for parent in current.parents)
+
+    return reversed(order)
 
 
 def backpropagate(variable: Variable, deriv: Any) -> None:
@@ -76,8 +93,19 @@ def backpropagate(variable: Variable, deriv: Any) -> None:
 
     No return. Should write to its results to the derivative values of each leaf through `accumulate_derivative`.
     """
-    # TODO: Implement for Task 1.4.
-    raise NotImplementedError('Need to implement for Task 1.4')
+    derivatives = {variable.unique_id: deriv}
+    for current in topological_sort(variable):
+        current_derivative = derivatives[current.unique_id]
+        if current.is_leaf():
+            current.accumulate_derivative(current_derivative)
+        else:
+            for parent, contribution in current.chain_rule(current_derivative):
+                if parent.is_constant():
+                    continue
+                if parent.unique_id in derivatives:
+                    derivatives[parent.unique_id] += contribution
+                else:
+                    derivatives[parent.unique_id] = contribution
 
 
 @dataclass
